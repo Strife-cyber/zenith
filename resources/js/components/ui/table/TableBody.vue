@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import type { TableRow } from './types';
-import { PlusCircleIcon, Edit, LucideTrash } from 'lucide-vue-next';
+import { Edit, LucideTrash } from 'lucide-vue-next';
 import Modal from '@/components/ui/table/Modal.vue';
 
 const props = defineProps<{
@@ -9,16 +9,16 @@ const props = defineProps<{
     currentPage: number;
     pageSize: number;
     searchQuery: string;
+    sortKey: string; // Added
+    sortDirection: 'asc' | 'desc'; // Added
+    columnFilters: Record<string, string>; // Added
     updatable?: boolean;
-    addable?: boolean;
     handleUpdate?: (id: string, data: any) => void;
-    handleAdd?: (data: any) => void;
 }>();
 
-// Reactive state for modal
 const isAddMode = ref(false);
 const showModal = ref(false);
-const selectedRow = ref<TableRow | null>(null); // Store the row to be edited
+const selectedRow = ref<TableRow | null>(null);
 
 const emit = defineEmits<{
     (e: 'update-row', row: TableRow): void;
@@ -26,18 +26,46 @@ const emit = defineEmits<{
     (e: 'add-row'): void;
 }>();
 
+// Filter data based on search query and column filters
 const filteredData = computed(() => {
-    return props.data.filter(row =>
-        Object.values(row).some(value =>
+    return props.data.filter(row => {
+        const matchesSearch = Object.values(row).some(value =>
             String(value).toLowerCase().includes(props.searchQuery.toLowerCase())
-        )
-    );
+        );
+        const matchesFilters = Object.entries(props.columnFilters).every(([key, filter]) => {
+            if (!filter) return true;
+            return String(row[key]).toLowerCase().includes(filter.toLowerCase());
+        });
+        return matchesSearch && matchesFilters;
+    });
 });
 
+// Sort filtered data
+const sortedData = computed(() => {
+    if (!props.sortKey) return filteredData.value;
+    return [...filteredData.value].sort((a, b) => {
+        const aValue = a[props.sortKey];
+        const bValue = b[props.sortKey];
+        if (aValue === bValue) return 0;
+
+        // Handle different data types
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+            return props.sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+        }
+        // Convert to string for comparison
+        const aStr = String(aValue).toLowerCase();
+        const bStr = String(bValue).toLowerCase();
+        return props.sortDirection === 'asc'
+            ? aStr.localeCompare(bStr)
+            : bStr.localeCompare(aStr);
+    });
+});
+
+// Slice sorted data for pagination
 const slicedData = computed(() => {
     const start = (props.currentPage - 1) * props.pageSize;
     const end = start + props.pageSize;
-    return filteredData.value.slice(start, end);
+    return sortedData.value.slice(start, end);
 });
 
 const headers = computed(() => {
@@ -49,14 +77,7 @@ const headers = computed(() => {
 function handleUpdateClick(row: TableRow) {
     emit('update-row', row);
     isAddMode.value = false;
-    selectedRow.value = row; // Set the row data for editing
-    showModal.value = true;
-}
-
-function handleAddClick() {
-    emit('add-row');
-    isAddMode.value = true;
-    selectedRow.value = null; // Clear selected row for add mode
+    selectedRow.value = row;
     showModal.value = true;
 }
 
@@ -98,15 +119,7 @@ function handleSubmit(formData: Record<string, any>) {
         </td>
         <td class="w-[200px] px-4 py-4 text-sm">
             <div class="flex space-x-8">
-                <slot />
-                <button
-                    v-if="props.addable"
-                    @click="handleAddClick"
-                    class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center transition-all duration-200 transform hover:scale-105"
-                    title="Add new row"
-                >
-                    <PlusCircleIcon class="size-4" />
-                </button>
+                <slot :row="row" />
                 <button
                     v-if="props.updatable"
                     @click="handleUpdateClick(row)"

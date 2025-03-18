@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import type { TableRow } from './types';
 
 const props = defineProps<{
     data: TableRow[];
+    sortKey: string;
+    sortDirection: 'asc' | 'desc';
+    columnFilters: Record<string, string>;
 }>();
 
-const sortKey = ref('');
-const sortDirection = ref<'asc' | 'desc'>('asc');
-const columnFilters = ref<Record<string, string>>({});
+const emit = defineEmits<{
+    (e: 'sort', header: string): void;
+}>();
 
 const headers = computed(() => {
     if (!props.data || props.data.length === 0) return [];
@@ -16,12 +19,7 @@ const headers = computed(() => {
 });
 
 function sortTable(header: string) {
-    if (sortKey.value === header) {
-        sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc';
-    } else {
-        sortKey.value = header;
-        sortDirection.value = 'asc';
-    }
+    emit('sort', header);
 }
 </script>
 
@@ -32,7 +30,7 @@ function sortTable(header: string) {
             v-for="header in headers"
             :key="header"
             @click="sortTable(header)"
-            class="w-[200px] px-4 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider cursor-pointer hover:bg-gray-700 transition-colors duration-150"
+            class="w-[200px] px-4 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider cursor-pointer hover:bg-gray-700/80 transition-colors duration-150"
         >
             <div class="flex items-center justify-between">
                 {{ header }}

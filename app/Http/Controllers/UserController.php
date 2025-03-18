@@ -52,7 +52,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user): void
     {
         $fields = $request->validate([
             'name' => 'string|max:255',
@@ -62,8 +62,6 @@ class UserController extends Controller
 
         $user->update($fields);
         $user->save();
-
-        return response()->json($user, 201);
     }
 
     /**

@@ -8,16 +8,26 @@ import type { TableRow } from './types';
 
 const props = defineProps<{
     data: TableRow[];
-    handleAdd?: (data: any) => void;
     handleUpdate?: (id: string, data: any) => void;
     handleDelete?: (id: string) => void;
     updatable?: boolean;
-    addable?: boolean;
 }>();
 
 const currentPage = ref(1);
 const pageSize = ref(10);
 const searchQuery = ref('');
+const sortKey = ref('');
+const sortDirection = ref<'asc' | 'desc'>('asc');
+const columnFilters = ref<Record<string, string>>({});
+
+function sortTable(header: string) {
+    if (sortKey.value === header) {
+        sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc';
+    } else {
+        sortKey.value = header;
+        sortDirection.value = 'asc';
+    }
+}
 </script>
 
 <template>
@@ -26,19 +36,30 @@ const searchQuery = ref('');
             <SearchBar v-model="searchQuery" />
             <div class="overflow-x-auto">
                 <table class="w-full table-fixed">
-                    <TableHeader :data="props.data" />
+                    <TableHeader
+                        :data="props.data"
+                        :sort-key="sortKey"
+                        :sort-direction="sortDirection"
+                        :column-filters="columnFilters"
+                        @sort="sortTable"
+                    />
                     <TableBody
                         :data="props.data"
                         :current-page="currentPage"
                         :page-size="pageSize"
                         :search-query="searchQuery"
+                        :sort-key="sortKey"
+                        :sort-direction="sortDirection"
+                        :column-filters="columnFilters"
                         :updatable="props.updatable"
-                        :addable="props.addable"
                         @update-row="openUpdateModal"
                         @delete-row="props.handleDelete"
                         :handle-update="handleUpdate"
-                        :handle-add="handleAdd"
-                    ><slot/></TableBody>
+                    >
+                        <template v-slot="{ row }">
+                            <slot :row="row"></slot> <!-- Passing row to the next slot -->
+                        </template>
+                    </TableBody>
                 </table>
             </div>
             <Pagination

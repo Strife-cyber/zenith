@@ -127,27 +127,29 @@ function setActiveTab(tabName: string) {
                     <!-- Users Tab -->
                     <div v-if="activeTab === 'users'" class="animate-fade-in">
                         <Table :data="users" :handle-update="updateRow" :handle-delete="deleteRow" :updatable="false">
-                            <button
-                                @click="openUpdateModal(row)"
-                                class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center transition-all duration-200 transform hover:scale-105"
-                            >
-                                <UserCog2 class="size-4"/>
-                            </button>
+                            <template v-slot="{ row }">
+                                <button
+                                    @click="() => updateRow(row.id, { 'admin': true })"
+                                    class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center transition-all duration-200 transform hover:scale-105"
+                                >
+                                    <UserCog2 class="size-4"/>
+                                </button>
+                            </template>
                         </Table>
                     </div>
 
                     <!-- Other Tabs (Listings, Apartments, Vehicles, Lands) -->
                     <div v-if="activeTab === 'listings'" class="animate-fade-in">
-                        <Table :data="listings" :handle-update="updateRow" :handle-delete="deleteRow" :addable="false" :updatable="true"/>
+                        <Table :data="listings" :handle-update="updateRow" :handle-delete="deleteRow" :updatable="true"/>
                     </div>
                     <div v-if="activeTab === 'apartments'" class="animate-fade-in">
-                        <Table :data="apartments" :handle-update="updateRow" :handle-delete="deleteRow" :addable="true" :updatable="true"/>
+                        <Table :data="apartments" :handle-update="updateRow" :handle-delete="deleteRow" :updatable="true"/>
                     </div>
                     <div v-if="activeTab === 'vehicles'" class="animate-fade-in">
-                        <Table :data="cars" :handle-update="updateRow" :handle-delete="deleteRow" :addable="true" :updatable="true"/>
+                        <Table :data="cars" :handle-update="updateRow" :handle-delete="deleteRow" :updatable="true"/>
                     </div>
                     <div v-if="activeTab === 'lands'" class="animate-fade-in">
-                        <Table :data="lands" :handle-update="updateRow" :handle-delete="deleteRow" :addable="true" :updatable="true"/>
+                        <Table :data="lands" :handle-update="updateRow" :handle-delete="deleteRow" :updatable="true"/>
                     </div>
                 </div>
             </div>
