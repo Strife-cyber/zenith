@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * @method static create(array $array)
  * @method static select(string[] $carColumns)
+ * @method static where(string $string, String $id)
+ * @method static find(String $id)
  */
 class Car extends Model
 {

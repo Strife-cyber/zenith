@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { PlusCircleIcon, Edit, LucideTrash, ChevronLeft, ChevronRight } from 'lucide-vue-next';
 
 interface TableRow {
     [key: string]: any;
@@ -185,20 +186,20 @@ function submitUpdate() {
                                         @click="openAddModal()"
                                         class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center transition-all duration-200 transform hover:scale-105"
                                     >
-                                        <i class="fas fa-plus-circle mr-1"></i>
+                                        <PlusCircleIcon class="size-4"/>
                                     </button>
                                     <button
                                         v-if="props.updatable"
                                         @click="openUpdateModal(row)"
                                         class="text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300 flex items-center transition-all duration-200 transform hover:scale-105"
                                     >
-                                        <i class="fas fa-edit mr-1"></i>
+                                        <Edit class="size-4"/>
                                     </button>
                                     <button
                                         @click="props.handleDelete(row.id)"
                                         class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 flex items-center transition-all duration-200 transform hover:scale-105"
                                     >
-                                        <i class="fas fa-trash mr-1"></i>
+                                        <LucideTrash class="size-4"/>
                                     </button>
                                     <slot/>
                                 </div>
@@ -234,7 +235,7 @@ function submitUpdate() {
                             :disabled="currentPage === 1"
                             class="px-3 py-1.5 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                         >
-                            <i class="fas fa-chevron-left"></i>
+                            <ChevronLeft class="size-4"/>
                         </button>
                         <span class="px-4 py-1.5 bg-indigo-50 dark:bg-gray-850 text-indigo-600 dark:text-indigo-400 rounded-md text-sm font-medium">
                           {{ currentPage }} / {{ totalPages }}
@@ -244,7 +245,7 @@ function submitUpdate() {
                             :disabled="currentPage === totalPages"
                             class="px-3 py-1.5 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-750 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                         >
-                            <i class="fas fa-chevron-right"></i>
+                            <ChevronRight class="size-4"/>
                         </button>
                     </div>
                 </div>

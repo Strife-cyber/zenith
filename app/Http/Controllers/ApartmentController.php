@@ -82,16 +82,17 @@ class ApartmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateApartmentRequest $request, Apartment $apartment)
+    public function update(UpdateApartmentRequest $request, Apartment $apartment): void
     {
-        //
+        $fields = $request->validated();
+        $apartment->update($fields);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Apartment $apartment)
+    public function destroy(Apartment $apartment): void
     {
-        //
+        $apartment->delete();
     }
 }

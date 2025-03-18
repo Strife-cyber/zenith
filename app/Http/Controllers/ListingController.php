@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Listing;
+use Illuminate\Http\JsonResponse;
 use App\Http\Requests\StoreListingRequest;
 use App\Http\Requests\UpdateListingRequest;
-use Inertia\Inertia;
-use Inertia\Response;
 
 class ListingController extends Controller
 {
@@ -53,16 +52,17 @@ class ListingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateListingRequest $request, Listing $listing)
+    public function update(UpdateListingRequest $request, Listing $listing): void
     {
-        //
+        $fields = $request->validated();
+        $listing->update($fields);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Listing $listing)
+    public function destroy(Listing $listing): void
     {
-        //
+        $listing->delete();
     }
 }

@@ -77,16 +77,17 @@ class LandController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateLandRequest $request, Land $land)
+    public function update(UpdateLandRequest $request, Land $land): void
     {
-        //
+        $fields = $request->validated();
+        $land->update($fields);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Land $land)
+    public function destroy(Land $land): void
     {
-        //
+        $land->delete();
     }
 }

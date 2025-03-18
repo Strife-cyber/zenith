@@ -78,16 +78,19 @@ class CarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCarRequest $request, Car $car)
+    public function update(UpdateCarRequest $request, String $id): void
     {
-        //
+        $car = Car::find($id);
+        $fields = $request->validated();
+        $car->update($fields);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Car $car)
+    public function destroy(String $id): void
     {
-        //
+        $car = Car::where('id', $id);
+        $car->delete();
     }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\LandController;
+use App\Http\Controllers\ListingController;
 use App\Http\Controllers\UserController;
 use Inertia\Inertia;
 use App\Models\Listing;
@@ -29,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::apiResource('lands', LandController::class);
         Route::apiResource('vehicles', CarController::class);
+        Route::apiResource('listings', ListingController::class);
         Route::apiResource('apartments', ApartmentController::class);
 
         Route::apiResource('admin', AdminController::class);
