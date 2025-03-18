@@ -138,7 +138,7 @@ function setActiveTab(tabName: string) {
 
                     <!-- Other Tabs (Listings, Apartments, Vehicles, Lands) -->
                     <div v-if="activeTab === 'listings'" class="animate-fade-in">
-                        <Table :data="listings" :handle-update="updateRow" :handle-delete="deleteRow" :addable="true" :updatable="true"/>
+                        <Table :data="listings" :handle-update="updateRow" :handle-delete="deleteRow" :addable="false" :updatable="true"/>
                     </div>
                     <div v-if="activeTab === 'apartments'" class="animate-fade-in">
                         <Table :data="apartments" :handle-update="updateRow" :handle-delete="deleteRow" :addable="true" :updatable="true"/>
