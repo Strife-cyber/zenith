@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import type { TableRow } from './types';
 import { PlusCircleIcon, Edit, LucideTrash } from 'lucide-vue-next';
+import Modal from '@/components/ui/table/Modal.vue';
 
 const props = defineProps<{
     data: TableRow[];
@@ -13,6 +14,9 @@ const props = defineProps<{
     handleUpdate?: (id: string, data: any) => void;
     handleAdd?: (data: any) => void;
 }>();
+
+const mode = ref(false);
+const show = ref(false);
 
 // Define emits with proper typing
 const emit = defineEmits<{
@@ -43,10 +47,14 @@ const headers = computed(() => {
 // Handler functions
 function handleUpdateClick(row: TableRow) {
     emit('update-row', row);
+    mode.value = false
+    show.value = true
 }
 
 function handleAddClick() {
     emit('add-row');
+    mode.value = true
+    show.value = true
 }
 
 function handleDeleteClick(id: string) {
@@ -100,4 +108,5 @@ function handleDeleteClick(id: string) {
         </td>
     </tr>
     </tbody>
+    <Modal v-if="show" :headers="headers" :is-add-mode="mode" :handle-cancel="() => show = false " :on-submit="() => { console.log('submitted') }"/>
 </template>
