@@ -24,13 +24,13 @@ const handleSearch = () => {
             :placeholder="placeholder || 'Search...'"
             @keyup.enter="handleSearch"
             class="w-full dark:bg-gray-800/80 px-4 py-3 backdrop-blur-lg border border-gray-700/50
-             rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500
-             transition-all duration-300 shadow-lg hover:shadow-orange-500/20"
+             rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500
+             transition-all duration-300 shadow-lg dark:hover:shadow-white-500/20 hover:shadow-black-500/20"
         />
         <button
             @click="handleSearch"
             class="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 transition-all
-            text-orange-500 hover:text-orange-700 duration-300"
+            text-black-500 dark:text-gray-500 hover:text-black-700 dark:hover:text-gray-700 duration-300"
         >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

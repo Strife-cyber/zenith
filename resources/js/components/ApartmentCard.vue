@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { Home } from 'lucide-vue-next';
+import Carousel from '@/components/ui/carousel/Carousel.vue';
 
-const props = defineProps<{
+defineProps<{
     listing: {
         id: number;
         title: string;
@@ -20,17 +21,6 @@ const props = defineProps<{
     };
 }>();
 
-// Carousel state
-const currentImageIndex = ref(0);
-
-const nextImage = () => {
-    currentImageIndex.value = (currentImageIndex.value + 1) % props.listing.images.length;
-};
-
-const prevImage = () => {
-    currentImageIndex.value = (currentImageIndex.value - 1 + props.listing.images.length) % props.listing.images.length;
-};
-
 // Ribbon color (orange for apartments)
 const ribbonColor = computed(() => 'bg-orange-500');
 </script>
@@ -45,42 +35,7 @@ const ribbonColor = computed(() => 'bg-orange-500');
         </div>
 
         <!-- Carousel -->
-        <div class="relative mb-4 overflow-hidden rounded-lg">
-            <img
-                :src="listing.images[currentImageIndex]?.image || 'https://via.placeholder.com/300x200?text=No+Image'"
-                :alt="`${listing.title} image ${currentImageIndex + 1}`"
-                class="w-full h-64 object-cover transition-all duration-500 ease-in-out transform scale-100 hover:scale-110"
-            />
-            <!-- Carousel Controls -->
-            <button
-                v-if="listing.images.length > 1"
-                @click="prevImage"
-                class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-900/50 p-2 rounded-full
-               text-white hover:bg-orange-500 transition-all duration-300">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-            </button>
-            <button
-                v-if="listing.images.length > 1"
-                @click="nextImage"
-                class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-900/50 p-2 rounded-full
-               text-white hover:bg-orange-500 transition-all duration-300">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </button>
-            <!-- Dots -->
-            <div v-if="listing.images.length > 1" class="absolute bottom-2 left-0 right-0 flex justify-center space-x-2">
-        <span
-            v-for="(image, index) in listing.images"
-            :key="index"
-            @click="currentImageIndex = index"
-            :class="['w-2 h-2 rounded-full cursor-pointer transition-all duration-300',
-                   currentImageIndex === index ? 'bg-orange-400 scale-125' : 'bg-gray-400']">
-        </span>
-            </div>
-        </div>
+        <Carousel :images="listing.images"/>
 
         <!-- Apartment Details -->
         <div class="space-y-3">

@@ -32,18 +32,5 @@ export default defineConfig({
         postcss: {
             plugins: [tailwindcss, autoprefixer],
         },
-    },
-    server: {
-        host: '0.0.0.0', // Bind to all interfaces for network access
-        port: 5173,
-        strictPort: true, // Fail if port 5173 is taken
-        cors: {
-            origin: 'http://192.168.1.179:8000', // Match Laravel's origin
-            credentials: true, // Allow credentials if needed
-        },
-        hmr: {
-            host: '192.168.1.179', // HMR uses your network IP
-            port: 5173,
-        },
-    },
+    }
 });
