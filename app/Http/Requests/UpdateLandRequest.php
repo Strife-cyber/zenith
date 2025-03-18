@@ -22,7 +22,9 @@ class UpdateLandRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'size' => 'numeric|min:1',
+            'zoning' => 'string|in:residential,commercial,agricultural',
+            'document' => 'boolean',
         ];
     }
 }

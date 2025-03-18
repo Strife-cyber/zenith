@@ -83,6 +83,7 @@ class CarController extends Controller
         $car = Car::find($id);
         $fields = $request->validated();
         $car->update($fields);
+        $car->save();
     }
 
     /**

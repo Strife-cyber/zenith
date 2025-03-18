@@ -86,6 +86,7 @@ class ApartmentController extends Controller
     {
         $fields = $request->validated();
         $apartment->update($fields);
+        $apartment->save();
     }
 
     /**

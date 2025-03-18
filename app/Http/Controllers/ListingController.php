@@ -56,6 +56,7 @@ class ListingController extends Controller
     {
         $fields = $request->validated();
         $listing->update($fields);
+        $listing->save();
     }
 
     /**

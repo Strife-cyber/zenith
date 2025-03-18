@@ -44,14 +44,14 @@ const ribbonColor = computed(() => 'bg-orange-500');
                 <h2 class="text-xl font-semibold text-gray-200 truncate">{{ listing.title }}</h2>
             </div>
             <div class="grid grid-cols-2 gap-2 text-sm text-gray-400">
-                <div><span class="font-semibold text-orange-400">Bedrooms:</span> {{ listing.listable.bedrooms }}</div>
-                <div><span class="font-semibold text-orange-400">Bathrooms:</span> {{ listing.listable.bathrooms }}</div>
-                <div><span class="font-semibold text-orange-400">Size:</span> {{ listing.listable.size }} sq ft</div>
-                <div><span class="font-semibold text-orange-400">Furnished:</span> {{ listing.listable.furnished ? 'Yes' : 'No' }}</div>
-                <div><span class="font-semibold text-orange-400">Parking:</span> {{ listing.listable.parking ? 'Yes' : 'No' }}</div>
+                <div><span class="font-semibold text-orange-400">Bedrooms:</span> {{ listing.listable?.bedrooms || 0 }}</div>
+                <div><span class="font-semibold text-orange-400">Bathrooms:</span> {{ listing.listable?.bathrooms || 0 }}</div>
+                <div><span class="font-semibold text-orange-400">Size:</span> {{ listing.listable?.size || '?' }} sq ft</div>
+                <div><span class="font-semibold text-orange-400">Furnished:</span> {{ listing.listable?.furnished ? 'Yes' : 'No' }}</div>
+                <div><span class="font-semibold text-orange-400">Parking:</span> {{ listing.listable?.parking ? 'Yes' : 'No' }}</div>
                 <div>
                     <span class="font-semibold text-orange-400">Amenities:</span>
-                    {{ listing.listable.amenities.split(',').join(', ') }}
+                    {{ listing.listable?.amenities.split(',').join(', ') }}
                 </div>
             </div>
             <p class="text-orange-400 font-bold text-lg">{{ listing.price.toLocaleString() }}</p>

@@ -4,11 +4,11 @@ import TableHeader from './TableHeader.vue';
 import TableBody from './TableBody.vue';
 import Pagination from './Pagination.vue';
 import SearchBar from './SearchBar.vue';
-import UpdateModal from './Modal.vue';
 import type { TableRow } from './types';
 
 const props = defineProps<{
     data: TableRow[];
+    handleAdd?: (data: any) => void;
     handleUpdate?: (id: string, data: any) => void;
     handleDelete?: (id: string) => void;
     updatable?: boolean;
@@ -18,7 +18,6 @@ const props = defineProps<{
 const currentPage = ref(1);
 const pageSize = ref(10);
 const searchQuery = ref('');
-const showModal = ref(false);
 </script>
 
 <template>
@@ -37,6 +36,8 @@ const showModal = ref(false);
                         :addable="props.addable"
                         @update-row="openUpdateModal"
                         @delete-row="props.handleDelete"
+                        :handle-update="handleUpdate"
+                        :handle-add="handleAdd"
                     ><slot/></TableBody>
                 </table>
             </div>
@@ -47,12 +48,6 @@ const showModal = ref(false);
                 :search-query="searchQuery"
             />
         </div>
-        <UpdateModal
-            v-if="showModal"
-            :headers="props.data[0] ? Object.keys(props.data[0]) : []"
-            @close="showModal = false"
-            @submit="props.handleUpdate"
-        />
     </div>
 </template>
 

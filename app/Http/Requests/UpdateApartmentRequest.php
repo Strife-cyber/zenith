@@ -22,7 +22,12 @@ class UpdateApartmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'bedrooms' => 'integer|min:1',
+            'bathrooms' => 'integer|min:1',
+            'size' => 'numeric|min:1',
+            'furnished' => 'boolean',
+            'parking' => 'boolean',
+            'amenities' => 'string',
         ];
     }
 }

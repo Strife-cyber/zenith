@@ -15,10 +15,11 @@ const props = defineProps<{
     handleAdd?: (data: any) => void;
 }>();
 
-const mode = ref(false);
-const show = ref(false);
+// Reactive state for modal
+const isAddMode = ref(false);
+const showModal = ref(false);
+const selectedRow = ref<TableRow | null>(null); // Store the row to be edited
 
-// Define emits with proper typing
 const emit = defineEmits<{
     (e: 'update-row', row: TableRow): void;
     (e: 'delete-row', id: string): void;
@@ -47,18 +48,35 @@ const headers = computed(() => {
 // Handler functions
 function handleUpdateClick(row: TableRow) {
     emit('update-row', row);
-    mode.value = false
-    show.value = true
+    isAddMode.value = false;
+    selectedRow.value = row; // Set the row data for editing
+    showModal.value = true;
 }
 
 function handleAddClick() {
     emit('add-row');
-    mode.value = true
-    show.value = true
+    isAddMode.value = true;
+    selectedRow.value = null; // Clear selected row for add mode
+    showModal.value = true;
 }
 
 function handleDeleteClick(id: string) {
     emit('delete-row', id);
+}
+
+function handleCancel() {
+    showModal.value = false;
+    selectedRow.value = null;
+}
+
+function handleSubmit(formData: Record<string, any>) {
+    if (isAddMode.value && props.handleAdd) {
+        props.handleAdd(formData);
+    } else if (!isAddMode.value && props.handleUpdate && formData.id) {
+        props.handleUpdate(formData.id, formData);
+    }
+    showModal.value = false;
+    selectedRow.value = null;
 }
 </script>
 
@@ -108,5 +126,12 @@ function handleDeleteClick(id: string) {
         </td>
     </tr>
     </tbody>
-    <Modal v-if="show" :headers="headers" :is-add-mode="mode" :handle-cancel="() => show = false " :on-submit="() => { console.log('submitted') }"/>
+    <Modal
+        v-if="showModal"
+        :data="selectedRow"
+        :headers="headers"
+        :is-add-mode="isAddMode"
+        :handle-cancel="handleCancel"
+        :on-submit="handleSubmit"
+    />
 </template>

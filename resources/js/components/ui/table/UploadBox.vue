@@ -2,24 +2,32 @@
 import { ref, watch, defineEmits, defineProps } from 'vue';
 import Toastify from 'toastify-js';
 import 'toastify-js/src/toastify.css';
-
-// Import Lucide Icons
 import {
     Upload, Trash, Grid, List, FolderTree, File, Folder, X, CloudUpload
 } from 'lucide-vue-next';
 
 const props = defineProps<{
-    files: File[];
+    files: File[]; // Files passed from parent
 }>();
 
-const emit = defineEmits(['update:files']);
+const emit = defineEmits<{
+    (e: 'update:files', files: File[]): void; // Event for v-model binding
+}>();
 
-const filesList = ref<File[]>([...props.files]); // Local state to avoid direct prop mutation
-const viewMode = ref('list');
+// Local reactive state initialized with props.files
+const filesList = ref<File[]>([...props.files]);
+const viewMode = ref<'list' | 'details' | 'tree'>('list');
 const isDragging = ref(false);
 const fileInput = ref<HTMLInputElement | null>(null);
 
-// Emit updated file list to the parent
+// Sync local filesList with parent prop changes
+watch(() => props.files, (newFiles) => {
+    if (JSON.stringify(newFiles) !== JSON.stringify(filesList.value)) {
+        filesList.value = [...newFiles];
+    }
+}, { deep: true });
+
+// Emit updated file list to parent
 const updateFiles = () => {
     emit('update:files', filesList.value);
 };
@@ -54,6 +62,7 @@ const handleFileUpload = (event: Event) => {
     if (target.files?.length) {
         filesList.value = [...filesList.value, ...Array.from(target.files)];
         updateFiles();
+        target.value = ''; // Reset input to allow re-uploading same files
     }
 };
 
@@ -97,7 +106,7 @@ const buildTree = (files: File[]) => {
     return tree;
 };
 
-// Watch files and update tree structure
+// Watch filesList and update tree structure
 watch(filesList, (newFiles) => {
     treeStructure.value = buildTree(newFiles);
 }, { immediate: true });
@@ -132,7 +141,7 @@ watch(filesList, (newFiles) => {
         @dragleave.prevent="handleDragLeave"
         @drop.prevent="handleDrop"
     >
-        <div v-if="!filesList.length" class="absolute inset-0 flex flex-col items-center justify-center border-2 border-dashed border-gray-400 bg-gray-50">
+        <div v-if="!filesList.length" @click="handleFileUpload" class="absolute inset-0 flex flex-col items-center justify-center border-2 border-dashed border-gray-400 bg-gray-50">
             <CloudUpload class="w-12 h-12 text-gray-400" />
             <p class="mt-4 text-gray-600">Drag and drop files here or click to upload</p>
         </div>

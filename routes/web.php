@@ -15,26 +15,23 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth'])->group(function () {
-        Route::get('dashboard', function () {
-            $listings = Listing::with('images')
-                ->inRandomOrder()
-                ->paginate(9);
+    Route::get('dashboard', function () {
+        $listings = Listing::with('images')
+            ->inRandomOrder()
+            ->paginate(9);
 
-            return Inertia::render('Dashboard', [
-                'listings' => $listings,
-            ]);
-        })->name('dashboard');
-        Route::get('lands', [LandController::class, 'index'])->name('lands');
-        Route::get('vehicles', [CarController::class, 'index'])->name('vehicles');
-        Route::get('apartments', [ApartmentController::class, 'index'])->name('apartments');
+        return Inertia::render('Dashboard', [
+            'listings' => $listings,
+        ]);
+    })->name('dashboard');
 
-        Route::apiResource('lands', LandController::class);
-        Route::apiResource('vehicles', CarController::class);
-        Route::apiResource('listings', ListingController::class);
-        Route::apiResource('apartments', ApartmentController::class);
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('admin', AdminController::class);
+    Route::apiResource('listings', ListingController::class);
 
-        Route::apiResource('admin', AdminController::class);
-        Route::apiResource('users', UserController::class);
+    Route::apiResource('lands', LandController::class)->name('index', 'lands');
+    Route::apiResource('vehicles', CarController::class)->name('index', 'vehicles');
+    Route::apiResource('apartments', ApartmentController::class)->name('index', 'apartments');
 });
 
 require __DIR__.'/settings.php';

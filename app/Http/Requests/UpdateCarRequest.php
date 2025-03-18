@@ -22,7 +22,12 @@ class UpdateCarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'make' => 'string|max:80',
+            'model' => 'string|max:80',
+            'year' => 'string|max:80',
+            'transmission' => 'string|max:80|in:manual,automatic',
+            'fuel' => 'string|in:petrol,diesel,electric',
+            'condition' => 'string|in:new,used',
         ];
     }
 }

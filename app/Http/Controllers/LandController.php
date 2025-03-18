@@ -81,6 +81,7 @@ class LandController extends Controller
     {
         $fields = $request->validated();
         $land->update($fields);
+        $land->save();
     }
 
     /**

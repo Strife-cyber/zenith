@@ -22,7 +22,12 @@ class UpdateListingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'string|max:80',
+            'description' => 'string|max:255',
+            'category' => 'string|in:apartment,car,land',
+            'type' => 'string|in:rent,sale',
+            'price' => 'string',
+            'status' => 'string|in:available,sold,rented,pending',
         ];
     }
 }
