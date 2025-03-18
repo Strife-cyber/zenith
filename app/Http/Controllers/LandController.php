@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Land;
+use Inertia\Inertia;
+use Inertia\Response;
+use App\Models\Listing;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreLandRequest;
 use App\Http\Requests\UpdateLandRequest;
 
@@ -11,9 +15,31 @@ class LandController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): Response
     {
-        //
+        $lands = Listing::with(['images', 'listable'])
+            ->where('category', 'land')
+            ->whereNotNull('listable_id');
+
+        $search = $request->input('search');
+
+        if ($search) {
+            $lands->where(function ($query) use ($search) {
+                $query->where('title', 'like', "%$search%")
+                    ->orWhere('type', 'like', "%$search%")
+                    ->orWhere('price', 'like', "%$search%")
+                    ->orWhereHas('listable', function ($query) use ($search) {
+                        $query->where('size', 'like', "%$search%")
+                            ->orWhere('zoning', 'like', "%z$search%")
+                            ->orWhere('document', 'like', "%$search%");
+                    });
+            });
+        }
+        $lands = $lands->paginate(9)->withQueryString();
+
+        return Inertia::render('Lands', [
+            'lands' => $lands,
+        ]);
     }
 
     /**

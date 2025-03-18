@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * @method static select(string[] $userColumns)
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
@@ -20,10 +23,8 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'phone'
+        'name', 'email',
+        'password', 'phone', 'admin'
     ];
 
     /**

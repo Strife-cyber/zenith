@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * @method static create(array $array)
  * @method static paginate(int $int)
+ * @method static select(array $columns)
  */
 class Listing extends Model
 {

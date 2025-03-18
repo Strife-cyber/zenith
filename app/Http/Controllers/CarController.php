@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use Inertia\Inertia;
+use Inertia\Response;
+use App\Models\Listing;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
 
@@ -11,9 +15,32 @@ class CarController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): Response
     {
-        //
+        $vehicles = Listing::with(['images', 'listable'])
+            ->where('category', 'car');
+
+        $search = $request->input('search');
+
+        if ($search) {
+            $vehicles->where(function ($query) use ($search) {
+                $query->orWhereHas('listable', function ($query) use ($search) {
+                    $query->where('make', 'like', '%' . $search . '%');
+                    $query->orWhere('model', 'like', '%' . $search . '%');
+                    $query->orWhere('year', 'like', '%' . $search . '%');
+                    $query->orWhere('transmission', 'like', '%' . $search . '%');
+                    $query->orWhere('fuel', 'like', '%' . $search . '%');
+                    $query->orWhere('condition', 'like', '%' . $search . '%');
+                });
+            });
+        }
+
+
+        $vehicles = $vehicles->paginate(9)->withQueryString();
+
+        return Inertia::render('Vehicles', [
+            'vehicles' => $vehicles,
+        ]);
     }
 
     /**

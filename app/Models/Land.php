@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @method static create(array $array)
+ * @method static select(string[] $landColumns)
  */
 class Land extends Model
 {

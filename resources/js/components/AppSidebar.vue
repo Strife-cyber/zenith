@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
+import { type NavItem, User } from '@/types';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
+import { Link, usePage } from '@inertiajs/vue3';
 import NavFooter from '@/components/NavFooter.vue';
-import { LayoutGrid, Building, CarFront, Map } from 'lucide-vue-next';
+import { LayoutGrid, Building, CarFront, Map, UserCog2Icon } from 'lucide-vue-next';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import AppLogo from '@/components/AppLogo.vue';
+
+const page = usePage<ShareData>();
+const user = page.props.auth.user as User;
 
 const mainNavItems: NavItem[] = [
     {
@@ -27,7 +31,12 @@ const mainNavItems: NavItem[] = [
         title: 'Lands',
         href: '/lands',
         icon: Map
-    }
+    },
+    ...(user.admin ? [{
+        title: 'Admin',
+        href: '/admin',
+        icon: UserCog2Icon
+    }] : [])
 ];
 </script>
 
@@ -37,8 +46,8 @@ const mainNavItems: NavItem[] = [
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="route('dashboard')" class="text-orange-500 font-bold text-xl">
-                            ZENITH ESTATE
+                        <Link :href="route('dashboard')">
+                            <AppLogo/>
                         </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>

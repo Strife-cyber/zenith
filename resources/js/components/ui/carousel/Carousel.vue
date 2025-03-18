@@ -22,13 +22,14 @@ const prevImage = () => {
     currentImageIndex.value =
         (currentImageIndex.value - 1 + props.images.length) % props.images.length;
 };
+console.log(props.images[currentImageIndex]?.image)
 </script>
 
 <template>
     <div class="relative mb-4 overflow-hidden rounded-lg">
         <!-- Main Image -->
         <img
-            :src="props.images[currentImageIndex]?.image || 'https://via.placeholder.com/300x200?text=No+Image'"
+            :src="props.images[currentImageIndex]?.image || 'https://th.bing.com/th/id/OIP.DEb9XSbXDEEPIprv2m8RdQHaEF?rs=1&pid=ImgDetMain'"
             :alt="`Image ${currentImageIndex + 1}`"
             class="w-full h-64 object-cover transition-all duration-500 ease-in-out transform hover:scale-110"
         />
