@@ -3,7 +3,6 @@
 import { ref, onMounted } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { BreadcrumbItem } from '@/components/ui/breadcrumb';
-import Table from '@/components/ui/table/Table.vue';
 import AddApartment from '@/components/AddApartment.vue';
 import AddVehicle from '@/components/AddVehicle.vue';
 import AddLand from '@/components/AddLand.vue';
