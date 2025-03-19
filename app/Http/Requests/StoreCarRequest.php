@@ -11,7 +11,7 @@ class StoreCarRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,19 @@ class StoreCarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string|max:80',
+            'description' => 'required|string',
+            'category' => 'required|string|in:car',
+            'type' => 'required|string|in:rent,sale',
+            'price' => 'required|numeric|min:0',
+            'status' => 'required|string|in:available,sold,rented,pending',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:5120', // 5MB max per file
+            'make' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
+            'year' => 'required|string|digits:4',
+            'fuel' => 'required|string|in:petrol,diesel,electric',
+            'transmission' => 'required|string|in:manual,automatic',
+            'condition' => 'required|string|in:new,used',
         ];
     }
 }

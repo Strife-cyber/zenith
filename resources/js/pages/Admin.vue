@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { defineProps, ref, onMounted } from 'vue';
+import { router } from '@inertiajs/vue3';
+import { UserCog2 } from 'lucide-vue-next';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { defineProps, ref, onMounted } from 'vue';
+import Toast from '@/components/ui/toast/Toast.vue';
 import Table from '@/components/ui/table/Table.vue';
 import { BreadcrumbItem } from '@/components/ui/breadcrumb';
-import { router } from '@inertiajs/vue3';
-import Toast from '@/components/ui/toast/Toast.vue';
-import { UserCog2 } from 'lucide-vue-next';
+import FloatingActionButton from '@/components/ui/button/FloatingActionButton.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -114,7 +115,7 @@ function setActiveTab(tabName: string) {
                             @click="setActiveTab(tab.name)"
                             :class="[activeTab === tab.name
                                   ? 'bg-white dark:bg-gray-800 text-orange-600 dark:text-orange-400 shadow-sm'
-                                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-800 dark:hover:bg-gray-850/60',
+                                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-850/60',
                                 'px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500']"
                         >
                             {{ tab.label }}
@@ -154,6 +155,7 @@ function setActiveTab(tabName: string) {
                 </div>
             </div>
         </div>
+        <FloatingActionButton @click="() => router.get(route('admin.create'))"/>
     </AppLayout>
 </template>
 

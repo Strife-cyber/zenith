@@ -117,10 +117,10 @@ watch(filesList, (newFiles) => {
         <!-- File Operation Buttons -->
         <div class="flex gap-2">
             <input
-                type="file"
                 ref="fileInput"
-                multiple
                 class="hidden"
+                multiple
+                type="file"
                 @change="handleFileUpload"
             />
             <Upload class="w-5 h-5 cursor-pointer text-gray-600 hover:text-blue-500" @click="openFilePicker" />

@@ -11,7 +11,7 @@ class StoreLandRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,16 @@ class StoreLandRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string|max:80',
+            'description' => 'required|string',
+            'category' => 'required|string|in:apartment,car,land',
+            'type' => 'required|string|in:rent,sale',
+            'price' => 'required|numeric|min:0',
+            'status' => 'required|string|in:available,sold,rented,pending',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:10240',
+            'size' => 'required|numeric|min:0',
+            'zoning' => 'required|string|in:residential,commercial,agricultural',
+            'document' => 'required|boolean',
         ];
     }
 }

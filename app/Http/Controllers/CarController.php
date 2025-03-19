@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use App\Models\Image;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Listing;
@@ -56,7 +57,43 @@ class CarController extends Controller
      */
     public function store(StoreCarRequest $request)
     {
-        //
+        $fields = $request->validated();
+
+        // Create Listing
+        $listing = Listing::create([
+            'title' => $fields['title'],
+            'description' => $fields['description'],
+            'category' => $fields['category'],
+            'type' => $fields['type'],
+            'price' => '$'.$fields['price'], // Store as a number
+            'status' => $fields['status'],
+        ]);
+
+        // Store images and associate them with the listing
+        if (!empty($fields['images'])) {
+            foreach ($fields['images'] as $image) {
+                $path = $image->store('images', 'public'); // Use $image instead of $request->file('image')
+                $url = asset("storage/{$path}");
+
+                Image::create([
+                    'listing_id' => $listing->id,
+                    'image' => $url,
+                ]);
+            }
+        }
+
+        $car = Car::create([
+            'make' => $fields['make'],
+            'model' => $fields['model'],
+            'year' => $fields['year'],
+            'fuel' => $fields['fuel'],
+            'transmission' => $fields['transmission'],
+            'condition' => $fields['condition'],
+            'listing_id' => $listing->id,
+        ]);
+
+        $listing->listable()->associate($car);
+        $listing->save();
     }
 
     /**

@@ -25,13 +25,13 @@ Route::middleware(['auth'])->group(function () {
         ]);
     })->name('dashboard');
 
-    Route::apiResource('users', UserController::class);
-    Route::apiResource('admin', AdminController::class);
-    Route::apiResource('listings', ListingController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('admin', AdminController::class);
+    Route::resource('listings', ListingController::class);
 
-    Route::apiResource('lands', LandController::class)->name('index', 'lands');
-    Route::apiResource('vehicles', CarController::class)->name('index', 'vehicles');
-    Route::apiResource('apartments', ApartmentController::class)->name('index', 'apartments');
+    Route::resource('lands', LandController::class)->name('index', 'lands');
+    Route::resource('vehicles', CarController::class)->name('index', 'vehicles');
+    Route::resource('apartments', ApartmentController::class)->name('index', 'apartments');
 });
 
 require __DIR__.'/settings.php';

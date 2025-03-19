@@ -46,7 +46,11 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        $user = auth()->user();
+
+        return $user['admin']
+            ? Inertia::render('Create')
+            : redirect()->route('404');
     }
 
     /**
