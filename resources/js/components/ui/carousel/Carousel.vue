@@ -29,7 +29,7 @@ console.log(props.images[currentImageIndex]?.image)
     <div class="relative mb-4 overflow-hidden rounded-lg">
         <!-- Main Image -->
         <img
-            :src="props.images[currentImageIndex]?.image || 'https://th.bing.com/th/id/OIP.DEb9XSbXDEEPIprv2m8RdQHaEF?rs=1&pid=ImgDetMain'"
+            :src="props.images[currentImageIndex].image || 'https://th.bing.com/th/id/OIP.DEb9XSbXDEEPIprv2m8RdQHaEF?rs=1&pid=ImgDetMain'"
             :alt="`Image ${currentImageIndex + 1}`"
             class="w-full h-64 object-cover transition-all duration-500 ease-in-out transform hover:scale-110"
         />
