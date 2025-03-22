@@ -13,7 +13,7 @@ const user = page.props.auth.user as User;
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Home',
         href: '/dashboard',
         icon: LayoutGrid,
     },

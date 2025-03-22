@@ -8,7 +8,7 @@ import { BreadcrumbItem } from '@/components/ui/breadcrumb';
 // Breadcrumbs
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Home',
         href: '/dashboard',
     },
 ];
@@ -61,7 +61,7 @@ const goToPage = (page: number) => {
                 <!-- Header -->
                 <h1 class="text-4xl md:text-5xl font-extrabold text-center bg-clip-text text-transparent
                  bg-gradient-to-r from-orange-400 to-orange-600 mb-10 animate-fadeIn">
-                    Dashboard Listings
+                    Listings
                 </h1>
 
                 <!-- Listings Grid -->
